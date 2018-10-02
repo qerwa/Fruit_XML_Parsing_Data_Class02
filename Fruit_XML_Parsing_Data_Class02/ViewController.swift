@@ -8,8 +8,11 @@
 
 import UIKit
 
-class ViewController: UIViewController, XMLParserDelegate {
+class ViewController: UIViewController, XMLParserDelegate, UITableViewDataSource, UITableViewDelegate {
+      
+      
 
+      @IBOutlet weak var myTableView: UITableView!
       
       //데이터 객체 초기화
       var myFruitData = [FruitData]()
@@ -17,15 +20,18 @@ class ViewController: UIViewController, XMLParserDelegate {
       var fColor = ""
       var fCost = ""
       
+      //현재의 tag를 저장
       var currentElement = ""
       
       
       override func viewDidLoad() {
             super.viewDidLoad()
             // Do any additional setup after loading the view, typically from a nib.
-            if let path = Bundle.main.url(forResource: "Fruit", withExtension: "xml") {
+            if let path = Bundle.main.url(forResource: "Fruit", withExtension: "XML") {
                   if let myParser = XMLParser(contentsOf: path) {
                         myParser.delegate = self
+                        myTableView.delegate = self
+                        myTableView.dataSource = self
                         
                         // 파싱 시작
                         if myParser.parse() {
@@ -33,6 +39,11 @@ class ViewController: UIViewController, XMLParserDelegate {
 //                              print(myFruitData[0].name)
 //                              print(myFruitData[0].color)
 //                              print(myFruitData[0].cost)
+                              for i in 0 ..< myFruitData.count {
+                                    print(myFruitData[i].name)
+                                    print(myFruitData[i].color)
+                                    print(myFruitData[i].cost)
+                              }
                         } else {
                               print("Parsing failed")
                         }
@@ -73,5 +84,24 @@ class ViewController: UIViewController, XMLParserDelegate {
                   myItem.cost = fCost
                   myFruitData.append(myItem)
             }
+            
+            
+      }
+      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+            return myFruitData.count
+      }
+      
+      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            let myCell = myTableView.dequeueReusableCell(withIdentifier: "re", for: indexPath)
+            
+            let fName = myCell.viewWithTag(1) as! UILabel
+            let fColor = myCell.viewWithTag(2) as! UILabel
+            let fCost = myCell.viewWithTag(3) as! UILabel
+            
+            fName.text = myFruitData[indexPath.row].name
+            fColor.text = myFruitData[indexPath.row].color
+            fCost.text = myFruitData[indexPath.row].cost
+            
+            return myCell
       }
 }
