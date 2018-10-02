@@ -95,13 +95,13 @@ class ViewController: UIViewController, XMLParserDelegate, UITableViewDataSource
             let myCell = myTableView.dequeueReusableCell(withIdentifier: "re", for: indexPath)
             
             let fName = myCell.viewWithTag(1) as! UILabel
-            let fColor = myCell.viewWithTag(2) as! UILabel
+//            let fColor = myCell.viewWithTag(2) as! UILabel
             let fCost = myCell.viewWithTag(3) as! UILabel
             
             fName.text = myFruitData[indexPath.row].name
-            fColor.text = myFruitData[indexPath.row].color
+//            fColor.text = myFruitData[indexPath.row].color
             fCost.text = myFruitData[indexPath.row].cost
-            
+
             return myCell
       }
 }
